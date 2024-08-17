@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Clasificación de Residuos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .definition {
+            margin-bottom: 20px;
+        }
+        .definition img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        #feedback {
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Juego de Clasificación de Residuos</h1>
+        <div id="definition" class="definition"></div>
+        <button id="nextButton" class="button">Mostrar Definición</button>
+        <div id="question" class="hidden">
+            <p>¿Qué tipo de residuo es una manzana? (Escribe 'Desechables', 'Aprovechables' o 'Orgánicos'):</p>
+            <input type="text" id="answer" />
+            <button id="submitButton" class="button">Enviar</button>
+            <div id="feedback"></div>
+        </div>
+    </div>
+    <script>
+        const definitions = [
+            {
+                tipo: "Desechables",
+                descripcion: "Residuos que se usan una sola vez y se descartan, como plásticos y envases.",
+                imagen: "d1.jpg"  // Reemplaza con el nombre y ruta de tu imagen
+            },
+            {
+                tipo: "Aprovechables",
+                descripcion: "Residuos que pueden ser reciclados o reutilizados, como papel y vidrio.",
+                imagen: "d2.jpg"  // Reemplaza con el nombre y ruta de tu imagen
+            },
+            {
+                tipo: "Orgánicos",
+                descripcion: "Residuos biodegradables provenientes de alimentos y restos vegetales.",
+                imagen: "d3.png"  // Reemplaza con el nombre y ruta de tu imagen
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function showDefinition() {
+            const def = definitions[currentIndex];
+            document.getElementById('definition').innerHTML = `
+                <strong>Tipo:</strong> ${def.tipo}<br>
+                <strong>Descripción:</strong> ${def.descripcion}<br>
+                <img src="${def.imagen}" alt="${def.tipo}" />
+            `;
+            document.getElementById('definition').classList.remove('hidden');
+            if (currentIndex === definitions.length - 1) {
+                document.getElementById('nextButton').classList.add('hidden');
+                document.getElementById('question').classList.remove('hidden');
+            } else {
+                currentIndex++;
+            }
+        }
+
+        function checkAnswer() {
+            const answer = document.getElementById('answer').value.trim().toLowerCase();
+            if (answer === 'organicos') {
+                document.getElementById('feedback').innerText = "¡Felicitaciones! Has respondido correctamente.";
+            } else {
+                document.getElementById('feedback').innerText = "Respuesta incorrecta. Intenta de nuevo.";
+            }
+        }
+
+        document.getElementById('nextButton').addEventListener('click', showDefinition);
+        document.getElementById('submitButton').addEventListener('click', checkAnswer);
+    </script>
+</body>
+</html>
