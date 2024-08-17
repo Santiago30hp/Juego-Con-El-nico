@@ -38,6 +38,7 @@
         }
         #feedback {
             font-weight: bold;
+            margin-top: 10px;
         }
         .hidden {
             display: none;
@@ -49,6 +50,7 @@
             color: white;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 10px;
         }
         .button:hover {
             background-color: #0056b3;
@@ -61,7 +63,7 @@
         <div id="definition" class="definition"></div>
         <button id="nextButton" class="button">Mostrar Definición</button>
         <div id="question" class="hidden">
-            <p>¿Qué tipo de residuo es una manzana? (Escribe 'Desechables', 'Aprovechables' o 'Orgánicos'):</p>
+            <p id="questionText"></p>
             <input type="text" id="answer" />
             <button id="submitButton" class="button">Enviar</button>
             <div id="feedback"></div>
@@ -72,17 +74,20 @@
             {
                 tipo: "Desechables",
                 descripcion: "Residuos que se usan una sola vez y se descartan, como plásticos y envases.",
-                imagen: "d1.jpg"  // Reemplaza con el nombre y ruta de tu imagen
+                imagen: "170707190-residuos-plásticos-desechables-vasos-cuchillos-tenedores-botellas-sobre-superficie-de-plástico.jpg",
+                pregunta: "¿Qué tipo de residuo es un envase de plástico? (Escribe 'Desechables', 'Aprovechables' o 'Orgánicos'):"
             },
             {
                 tipo: "Aprovechables",
                 descripcion: "Residuos que pueden ser reciclados o reutilizados, como papel y vidrio.",
-                imagen: "d2.jpg"  // Reemplaza con el nombre y ruta de tu imagen
+                imagen: "Codigo-de-Color-Colombia-Residuos-Aprovechables-Blanco.png",
+                pregunta: "¿Qué tipo de residuo es un papel reciclable? (Escribe 'Desechables', 'Aprovechables' o 'Orgánicos'):"
             },
             {
                 tipo: "Orgánicos",
                 descripcion: "Residuos biodegradables provenientes de alimentos y restos vegetales.",
-                imagen: "d3.png"  // Reemplaza con el nombre y ruta de tu imagen
+                imagen: "depositphotos_183080266-stock-illustration-organic-waste-food-compost-collection.jpg",
+                pregunta: "¿Qué tipo de residuo es una manzana? (Escribe 'Desechables', 'Aprovechables' o 'Orgánicos'):"
             }
         ];
 
@@ -96,20 +101,31 @@
                 <img src="${def.imagen}" alt="${def.tipo}" />
             `;
             document.getElementById('definition').classList.remove('hidden');
-            if (currentIndex === definitions.length - 1) {
-                document.getElementById('nextButton').classList.add('hidden');
-                document.getElementById('question').classList.remove('hidden');
-            } else {
-                currentIndex++;
-            }
+            document.getElementById('questionText').innerText = def.pregunta;
+            document.getElementById('question').classList.remove('hidden');
+            document.getElementById('nextButton').classList.add('hidden');
         }
 
         function checkAnswer() {
             const answer = document.getElementById('answer').value.trim().toLowerCase();
-            if (answer === 'organicos') {
-                document.getElementById('feedback').innerText = "¡Felicitaciones! Has respondido correctamente.";
+            const correctAnswer = definitions[currentIndex].tipo.toLowerCase();
+            const feedbackElement = document.getElementById('feedback');
+
+            if (answer === correctAnswer) {
+                feedbackElement.innerText = "¡Felicitaciones! Has respondido correctamente.";
+                feedbackElement.style.color = "green";
+                currentIndex++;
+                if (currentIndex < definitions.length) {
+                    document.getElementById('answer').value = '';
+                    document.getElementById('question').classList.add('hidden');
+                    document.getElementById('nextButton').classList.remove('hidden');
+                } else {
+                    feedbackElement.innerText += " ¡Has completado el juego!";
+                    document.getElementById('question').classList.add('hidden');
+                }
             } else {
-                document.getElementById('feedback').innerText = "Respuesta incorrecta. Intenta de nuevo.";
+                feedbackElement.innerText = "Respuesta incorrecta. Intenta de nuevo.";
+                feedbackElement.style.color = "red";
             }
         }
 
@@ -118,3 +134,4 @@
     </script>
 </body>
 </html>
+        
